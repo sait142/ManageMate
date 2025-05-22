@@ -15,6 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import java.awt.font.TextAttribute;
+import java.util.Map;
+import java.util.HashMap;
+
 public class ToDoListFunction extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
@@ -226,12 +230,32 @@ public class ToDoListFunction extends JFrame implements ActionListener {
 		checkStatus.setBounds(10, 15, 20, 20);
 		checkStatus.setOpaque(false);
 		taskPanel.add(checkStatus);
-
+		
 		JLabel taskLabel = new JLabel(taskText);
 		taskLabel.setFont(new Font("San Francisco", Font.PLAIN, 25));
 		taskLabel.setForeground(Color.WHITE);
 		taskLabel.setBounds(45, 10, 620, 25);
 		taskPanel.add(taskLabel);
+		
+		Runnable updateFontStyle = () -> {
+			Font baseFont = taskLabel.getFont();
+			Map<TextAttribute, Object> attributes = new HashMap<>(baseFont.getAttributes());
+			if (checkStatus.isSelected()) {
+				attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
+			} else {
+				attributes.remove(TextAttribute.STRIKETHROUGH);
+			}
+			taskLabel.setFont(baseFont.deriveFont(attributes));
+		};
+
+		checkStatus.addActionListener(e -> updateFontStyle.run());
+
+		taskLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				checkStatus.setSelected(!checkStatus.isSelected());
+				updateFontStyle.run();
+			}
+		});
 
 		taskPanels.add(taskPanel);
 		tasksScroll.add(taskPanel);
@@ -258,3 +282,9 @@ public class ToDoListFunction extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {}
 }
+	
+		
+	
+
+	
+
