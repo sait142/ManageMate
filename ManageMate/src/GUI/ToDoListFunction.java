@@ -27,6 +27,7 @@ public class ToDoListFunction extends JFrame implements ActionListener {
 	private boolean editMode = false;
 	private JButton editButton;
 	private JButton addButton;
+	private JButton deleteAllButton, saveButton;
 
 	public ToDoListFunction(JPanel taskFunction) {
 		// ADDING TASK
@@ -40,9 +41,9 @@ public class ToDoListFunction extends JFrame implements ActionListener {
 		// Button
 		Dimension buttonSize = new Dimension(176, 82);
 
-		addButton = new JButton("+ Add"); // Add function
-		addButton.setFont(new Font("Arial", Font.BOLD, 20));
-		addButton.setBounds(726, 199, 120, 45);
+		addButton = new JButton("+ Add");
+		addButton.setFont(new Font("Arial", Font.BOLD, 15));
+		addButton.setBounds(745, 199, 100, 35);
 		addButton.setFocusable(false);
 		addButton.setBackground(new Color(238, 238, 238));
 		addButton.setPreferredSize(buttonSize);
@@ -56,14 +57,24 @@ public class ToDoListFunction extends JFrame implements ActionListener {
 		});
 		taskFunction.add(addButton);
 
-		editButton = new JButton("Edit"); // Edit button
-		editButton.setFont(new Font("Arial", Font.BOLD, 20));
-		editButton.setBounds(599, 199, 120, 45);
+		editButton = new JButton("Edit");
+		editButton.setFont(new Font("Arial", Font.BOLD, 15));
+		editButton.setBounds(625, 199, 100, 35);
 		editButton.setFocusable(false);
 		editButton.setBackground(new Color(238, 238, 238));
 		editButton.setPreferredSize(buttonSize);
 		editButton.addActionListener(e -> EditMode());
 		taskFunction.add(editButton);
+
+		//delete all tasks
+		deleteAllButton = new JButton("Clear All");
+		deleteAllButton.setFont(new Font("Arial", Font.BOLD, 15));
+		deleteAllButton.setBounds(470, 199, 110, 35);
+		deleteAllButton.setFocusable(false);
+		deleteAllButton.setBackground(new Color(255, 64, 64));
+		deleteAllButton.setVisible(false);
+		deleteAllButton.addActionListener(e -> deleteAllTasks());
+		taskFunction.add(deleteAllButton);
 
 		// Scroll
 		tasksScroll = new JPanel();
@@ -75,19 +86,20 @@ public class ToDoListFunction extends JFrame implements ActionListener {
 		scrollPanel.setBorder(null);
 		taskFunction.add(scrollPanel);
 	}
-	
-	//edit function
+
 	private void EditMode() {
 		editMode = !editMode;
 		if (editMode) {
-			editButton.setText("Done");
-			editButton.setBackground(new Color(255, 69, 58));
+			editButton.setText("Save");
+			editButton.setBackground(new Color(255, 64, 64));
 			addButton.setEnabled(false);
+			deleteAllButton.setVisible(true);
 			showDeleteButtons();
 		} else {
 			editButton.setText("Edit");
 			editButton.setBackground(new Color(238, 238, 238));
 			addButton.setEnabled(true);
+			deleteAllButton.setVisible(false);
 			hideDeleteButtons();
 		}
 	}
@@ -164,6 +176,16 @@ public class ToDoListFunction extends JFrame implements ActionListener {
 		}
 	}
 
+	private void deleteAllTasks() {
+		taskList.clear();
+		taskPanels.clear();
+		tasksScroll.removeAll();
+		tasksScroll.setPreferredSize(new java.awt.Dimension(750, 380));
+		tasksScroll.revalidate();
+		tasksScroll.repaint();
+		EditMode();
+	}
+
 	private void repositionTasks() {
 		for (int i = 0; i < taskPanels.size(); i++) {
 			JPanel taskPanel = taskPanels.get(i);
@@ -178,7 +200,6 @@ public class ToDoListFunction extends JFrame implements ActionListener {
 						for (ActionListener listener : listeners) {
 							btn.removeActionListener(listener);
 						}
-
 						final int newIndex = i;
 						btn.addActionListener(e -> deleteTask(newIndex));
 						break;
@@ -235,7 +256,5 @@ public class ToDoListFunction extends JFrame implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-	}
+	public void actionPerformed(ActionEvent e) {}
 }
