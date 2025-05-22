@@ -26,7 +26,7 @@ public class ToDoListFunction extends JFrame implements ActionListener{
 	private ArrayList<String> taskList = new ArrayList<>();
 	
 	public ToDoListFunction(JPanel taskFunction){
-		//adding task
+		//ADDING TASK
 		inputTask = new JTextField(20);
 		inputTask.setBounds(95, 124, 750, 65);
 		inputTask.setOpaque(true);
@@ -86,31 +86,26 @@ public class ToDoListFunction extends JFrame implements ActionListener{
         int addingTask = taskCount * 60;
         
         JPanel taskPanel = new JPanel();
-        taskPanel.setBounds(10, addingTask, 100, 50);
+        taskPanel.setBounds(5, addingTask, 770, 45);
         taskPanel.setBackground(new Color(0, 0, 0));
         taskPanel.setOpaque(false);
+        taskPanel.setLayout(null);
         
         taskText = task;
         
-        // Task name
-        JLabel taskLabel = new JLabel(taskText);
-        taskLabel.setFont(new Font("San Francisco", Font.PLAIN, 20));
-        taskLabel.setForeground(Color.WHITE);
-        taskLabel.setBounds(10, 15, 400, 20);
-        taskPanel.add(taskLabel);
-        
         // check status button
-        checkStatus = new JCheckBox();
+        checkStatus = new JCheckBox(taskText);
         checkStatus.setLayout(null);
         checkStatus.setBounds(10, 15, 20, 20);
-        checkStatus.setBackground(new Color(0, 0, 0));
         checkStatus.setOpaque(false);
-        checkStatus.addActionListener(ManageMate ->{
-        	if(checkStatus.isSelected()) {
-        		taskLabel.setText(taskText);
-        	}
-        });
         taskPanel.add(checkStatus);
+        
+        //inputting task
+        JLabel taskLabel = new JLabel(taskText);
+        taskLabel.setFont(new Font("San Francisco", Font.PLAIN, 25));
+        taskLabel.setForeground(Color.WHITE);
+        taskLabel.setBounds(45, 10, 700, 25);
+        taskPanel.add(taskLabel);
         
         tasksScroll.add(taskPanel);
         tasksScroll.setPreferredSize(new java.awt.Dimension(750, Math.max(380, (taskList.size() * 60))));
